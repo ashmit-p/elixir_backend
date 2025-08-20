@@ -15,7 +15,7 @@ const httpServer = createServer(app);
 
 app.use(cors({
   origin: [
-    'http://localhost:3000',
+    'https://elixirfrontend-production.up.railway.app/',
     process.env.FRONTEND_URL || '',
     // VERCEL URL TO ADD
   ].filter(Boolean),
@@ -72,4 +72,5 @@ async function main() {
 main().catch((err) => {
   console.error('❌ Fatal error:', err);
   process.exit(1);
+
 });
