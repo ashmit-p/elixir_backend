@@ -1,0 +1,42 @@
+import { GoogleGenAI } from '@google/genai';
+import dotenv from 'dotenv';
+import { getPersonalityById, defaultPersonality } from './personalities';
+dotenv.config();
+
+const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+
+export async function getGeminiResponse(
+  prompt: string, 
+  contextMessages: string[], 
+  personalityId?: string
+): Promise<string> {
+  const personality = personalityId ? getPersonalityById(personalityId) : defaultPersonality;
+  const context = contextMessages.join('\n');
+  const fullPrompt = `${context}\n\nUser: ${prompt}\nAI:`;
+
+  try {
+    const result = await genAI.models.generateContent({
+      model: 'models/gemini-1.5-flash',
+      contents: [
+        {
+          role: 'user', 
+          parts: [
+            {
+              text: personality.prompt,
+            },
+          ],
+        },
+        {
+          role: 'user', 
+          parts: [{ text: fullPrompt }],
+        },
+      ],
+    });
+
+    const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+    return text || 'Sorry, I could not generate a response.';
+  } catch (error: unknown) {
+    console.error('Gemini API error:', error);
+    return 'The AI is currently busy. Please try again in a moment.';
+  }
+}
