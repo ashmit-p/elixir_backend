@@ -76,7 +76,7 @@ export default function socketHandler(io: Server) {
       try {
         await redis.del(`context:${roomId}`);
 
-        await supabaseAdmin
+        const { data, error } = await supabaseAdmin
           .from('ai_messages')
           .delete()
           .eq('room_id', roomId)
@@ -242,6 +242,7 @@ export default function socketHandler(io: Server) {
     });
   });
 }
+
 
 
 
