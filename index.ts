@@ -45,10 +45,10 @@ app.get('/health', (req, res) => {
 });
 
 async function main() {
-  console.log('REDIS_URL:', process.env.REDIS_URL);
+  console.log('REDIS_URL:', process.env.REDIS_URL + "?family=0");
   try {
     const pubClient = createClient({ 
-      url: process.env.REDIS_URL || 'redis://localhost:6379' 
+      url: process.env.REDIS_URL + "?family=0" || 'redis://localhost:6379' 
     });
     const subClient = pubClient.duplicate();
 
@@ -75,6 +75,7 @@ main().catch((err) => {
   process.exit(1);
 
 });
+
 
 
 
