@@ -81,6 +81,10 @@ export default function socketHandler(io: Server) {
           .delete()
           .eq('room_id', roomId)
 
+        console.log('Supabase delete response data:', data);
+        console.log('Supabase delete response error:', error);
+        console.log("ROOMID on deletion:", roomId);
+
         socket.emit('chat_reset_success');
       } catch (err) {
         console.error('Reset error:', err);
@@ -238,6 +242,7 @@ export default function socketHandler(io: Server) {
     });
   });
 }
+
 
 
 
