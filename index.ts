@@ -27,7 +27,7 @@ console.log('[ws-server] Starting WebSocket server...');
 const io = new Server(httpServer, {
   cors: {
     origin: [
-      'http://localhost:3000',
+      'https://elixirfrontend-production.up.railway.app',
       process.env.FRONTEND_URL || '',
     // VERCEL URL TO ADD
     ].filter(Boolean),
@@ -45,6 +45,7 @@ app.get('/health', (req, res) => {
 });
 
 async function main() {
+  console.log('REDIS_URL:', process.env.REDIS_URL);
   try {
     const pubClient = createClient({ 
       url: process.env.REDIS_URL || 'redis://localhost:6379' 
@@ -74,3 +75,4 @@ main().catch((err) => {
   process.exit(1);
 
 });
+
