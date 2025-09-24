@@ -76,13 +76,13 @@ export default function socketHandler(io: Server) {
       try {
         await redis.del(`context:${roomId}`);
 
-        const { data, error } = await supabaseAdmin
+        const { data: deleteData, error: deleteError } = await supabaseAdmin
           .from('ai_messages')
           .delete()
           .eq('room_id', roomId)
-
-        console.log('Supabase delete response data:', data);
-        console.log('Supabase delete response error:', error);
+        
+        console.log('Supabase delete response data:', deleteData);
+        console.log('Supabase delete response error:', deleteError);
         console.log("ROOMID on deletion:", roomId);
 
         socket.emit('chat_reset_success');
@@ -242,6 +242,7 @@ export default function socketHandler(io: Server) {
     });
   });
 }
+
 
 
 
